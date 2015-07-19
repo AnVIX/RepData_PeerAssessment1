@@ -3,7 +3,6 @@ title: "Reproducible Research Project 1: personal activity monitoring"
 output: 
   html_document:
     keep_md: true
-    fig_caption: yes
 ---
 
 
@@ -77,8 +76,9 @@ In this section, the PAM dataset missing values, coded as `NA`, are ignored. The
    print(g)
 ```
 
-![**Figure 1**: PAM dataset mean total steps taken per day distribution     where missing values are ignored.](figure/histogram daily steps-1.png) 
+![plot of chunk histogram total daily steps](figure/histogram total daily steps-1.png) 
 
+**Figure 1**: PAM dataset mean total steps taken per day distribution where missing values are ignored.
 
 
 ```r
@@ -111,8 +111,9 @@ To identify activity pattern in the PAM dataset, a time-series plot of the avera
    print(g)
 ```
 
-![**Figure 2**: Time-series plot of the average daily activity for all days.](figure/time-series-1.png) 
+![plot of chunk time-series all days plot](figure/time-series all days plot-1.png) 
 
+**Figure 2**: Time-series plot of the average daily activity for all days.
 
 The time-series plot of **Figure 2** clearly discloses a daily activity peak pattern around intervals [810-925]. On average, over all days, the 5-minute interval 835 records the maximum activity (number of steps): ~206 steps. Taking interval 0 as a reference, 00.00 AM, midnight (in a standard time basis of 60 minutes/hour and 24 hours/day), interval 835 corresponds to 8.35 AM. 
 
@@ -176,8 +177,9 @@ To evaluate the impact of imputing NA's, the total number of steps taken daily a
    print(g)
 ```
 
-![**Figure 3**: PAM dataset mean total steps taken per day  distribution where missing values are imputed.](figure/histogram daily steps - NAs imp.-1.png) 
+![plot of chunk histogram total daily steps - NAs imp.](figure/histogram total daily steps - NAs imp.-1.png) 
 
+**Figure 3**: PAM dataset mean total steps taken per day distribution where missing values are imputed.
 
 The mean value: 10766.2 steps and median: 10766.2 steps evaluated from the `data_pam_na.im` data are remarkably compatible with those obtained when omitting NA's (10766.2 and 10765.0 steps respectively). Given the strategy adopted here to handle the missing values, one concludes that the omission of the latter has a negligible effect on the interpretation of the data.
 
@@ -207,7 +209,9 @@ Similarly to the analysis in **section 3**, time-series plots are particularly u
    print(g)
 ```
 
-![**Figure 4**: Time-series plots of the average daily activity for weekends (top panel) and weekdays (bottom panel).](figure/weekdays panel plot-1.png) 
+![plot of chunk time-series wdays panel plot](figure/time-series wdays panel plot-1.png) 
+
+**Figure 4**: Time-series plots of the average daily activity for weekends (top panel) and weekdays (bottom panel).
 
 The panels comparison in **Figure 4** reveals different activity trends during weekdays and weekends. For instance, during the weekends, the person's activity is characterized by several peak patterns of comparable intensity approximately between intervals [730-1730]. 
 
@@ -259,9 +263,9 @@ The panels comparison in **Figure 4** reveals different activity trends during w
 
 <a name="Ref3"></a> [3] Statistics tutorials and SPSS guides from [Laerd Statistics](https://statistics.laerd.com/statistical-guides/measures-central-tendency-mean-mode-median.php). </a>
 
-[2] R.D. Peng, [Exploratory Data Analysis](https://www.coursera.org/course/exdata) and [Reproducible Research](https://www.coursera.org/course/repdata) lectures, Johns Hopkings University and Coursera Data Science Specialization.
+[4] R.D. Peng, [Exploratory Data Analysis](https://www.coursera.org/course/exdata) and [Reproducible Research](https://www.coursera.org/course/repdata) lectures, Johns Hopkings University and Coursera Data Science Specialization.
 
-[3] J. Leek, [Getting and Cleaning Data](https://www.coursera.org/course/getdata) lectures, Johns Hopkings University and Coursera Data Science Specialization.
+[5] J. Leek, [Getting and Cleaning Data](https://www.coursera.org/course/getdata) lectures, Johns Hopkings University and Coursera Data Science Specialization.
 
-[5] The [ggplot2 package](http://docs.ggplot2.org/0.9.2.1/) documentation.
+[6] The [ggplot2 package](http://docs.ggplot2.org/0.9.2.1/) documentation.
 
