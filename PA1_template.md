@@ -17,7 +17,6 @@ Date: Friday, July 17, 2015
 ### Report sections
 
 * **Data description**
-* **Data analysis sections**:
 1. **Loading and pre-processing the data**
 2. **The mean total number of steps taken per day**
 3. **The average daily activity pattern**
@@ -38,7 +37,7 @@ The dataset file was obtained from this project's parent or upstream [Github rep
 |steps|numeric|number of steps taken in a 5-minute interval||
 |date|factor|date when the measurement was recorded in YYYY-MM-DD format|
 |interval|numeric|identifier for the 5-minute interval|
-||||
+
 
 **Table 1**: Description of the PAM dataset variables.
 
