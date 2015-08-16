@@ -8,7 +8,7 @@ output:
 
 
 Author: AnVIX --
-Date: Friday, July 17, 2015
+Date: Thursday, August 13, 2015
 
 **Project summary**: personal movement records from activity monitoring devices (PAM) provide an interesting source of large datasets to study patterns, to improve health, and for Maching Learning applications [[1]](#Ref1). PAM datasets remain however generally under-exploited due to technical limitations. This report presents analysis of a PAM set with focus on exploring data properties and identifying activity patterns. Since missing values (i.e., unavailable measurements) are often encountered with data, a strategy to handle this aspect is proposed and examined. Finally, prepared using R Markdown the present document showcases the knitr package [[2]](#Ref2) capabilities to generate dynamic and transparent R reports.
 
@@ -30,7 +30,7 @@ Date: Friday, July 17, 2015
 
 The raw PAM dataset analyzed in this report was recorded using a personal activity monitoring device. The device collected the number of steps taken by an anonymous individual at 5-minute intervals throughout the day. The data consists of two months of measurements performed during October and November, 2012.
 
-The dataset file was obtained from this project's parent or upstream [Github repository](https://github.com/rdpeng/RepData_PeerAssessment1) as of 07-19-2015. Alternatively, the data can be retrieved using this [link](https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip). The PAM data is stored in a comma separated value (.csv) file (size=52.3 KB) containing 17568 observations of 3 variables. **Table 1** provides a summary of these variables.
+The dataset file was obtained from this project's parent or upstream [Github repository](https://github.com/rdpeng/RepData_PeerAssessment1) as of 08-12-2015. Alternatively, the data can be retrieved using this [link](https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip). The PAM data is stored in a comma separated value (.csv) file (size=52.3 KB) containing 17568 observations of 3 variables. **Table 1** provides a summary of these variables.
 
 |Variable|Type|Description|
 |--------|----|-----------|
@@ -43,7 +43,7 @@ The dataset file was obtained from this project's parent or upstream [Github rep
 
 ## 1. Loading and pre-processing the data
 
-The first step in the analysis is to read the raw dataset in [R](http://www.r-project.org/). Provided the PAM data file (`activity.zip`) is downloaded to the local working directory, the R code chunk below loads the dataset as a data frame, `data_pam`. The `date` variable is converted to a POSIXct date-time class object using the [lubridate package](http://www.jstatsoft.org/v40/i03/), as will be needed in further analysis.
+The first step in the analysis is to read the raw dataset in [R](http://www.r-project.org/). Provided the PAM data file (`activity.zip`) is downloaded to the local working directory, the R code chunk below loads the dataset as a data frame, `data_pam`. The `date` variable is converted to a POSIXct date-time class object using the [lubridate package](http://www.jstatsoft.org/v40/i03/), as required for further analysis.
 
 
 ```r
@@ -131,9 +131,9 @@ In this section, the effect of missing values (NA's) in the PAM dataset and pote
 ##     2304        0        0
 ```
 
-The `steps` variable comprises 2304 NA entries. For instance, the first day (2012-10-01) of the PAM measurements is consistent with absence of `steps` records for all intervals -- throughout the day. 
+The `steps` variable comprises 2304 NA entries. For instance, the first day (2012-10-01) of the PAM measurements is consistent with the absence of records for all intervals -- throughout the day. 
 
-The strategy adopted here to fill-in the NA's proposes to estimate the latter from the available data. Specifically, NA's are substituted, on interval-basis, by the appropriate interval mean value (of steps). The needed quantities for each interval, that is the mean value of steps over all days considered in the study, were already estimated (`interv.mean$steps`) in **section 3**. Ultimately, a new dataset `data_pam_na.im` with imputed NA's is created, as executed by the following R script.
+The strategy adopted here to fill-in the NA's proposes to estimate the latter from the available data. Specifically, NA's are substituted on interval-basis by the appropriate interval mean value of steps. The required quantities for each interval, that is the mean value of steps over all days considered in the study, were already estimated (`interv.mean$steps`) in **Section 3**. Ultimately, a new dataset `data_pam_na.im` with imputed NA's is created, as executed by the following R script.
 
 
 ```r
@@ -144,7 +144,7 @@ The strategy adopted here to fill-in the NA's proposes to estimate the latter fr
                             interv.mean$steps))
 ```
 
-To evaluate the impact of imputing NA's, the total number of steps taken daily are calculated again. As  performed previously in **section 2**, the new total daily steps variable distribution (`PAM-tds-na.im`)  histogram plot is presented in **Figure 3**.
+To evaluate the impact of imputing NA's, the total number of steps taken daily are calculated again. As performed in **Section 2**, the new total daily steps variable distribution (`PAM-tds-na.im`)  histogram plot is presented in **Figure 3**.
 
 
 ```r
@@ -185,17 +185,16 @@ The mean value: 10766.2 steps and median: 10766.2 steps evaluated from the `data
 
 ## 5. Differences in activity patterns between weekdays and weekends
 
-Having identified daily activity patterns in **section 3**, it is interesting to inspect the PAM data (`data_pam_na.im`, with imputed NA's) for possible activity differences between weekdays (Monday-Friday) and weekends (Saturday-Sunday). To achieve this, a new 2-level factor variable `wdays` is created to indicate whether the `date` variable is a weekend (level:1) or a weekday (level:2). The isWeekday() function of the [timeDate package](https://cran.r-project.org/web/packages/timeDate/timeDate.pdf) is employed to infer `wdays` accordingly. Provided a timeDate object input, isWeekday() performs a logical test to determine if the date is a weekday. If the test fails (i.e., returns FALSE), the date is then a weekend day. The `wdays` variable is added to (combined by column with) the `data_pam_na.im` dataframe.
+Having identified daily activity patterns in **Section 3**, it is interesting to inspect the PAM data (`data_pam_na.im`, with imputed NA's) for possible activity differences between weekdays (Monday-Friday) and weekends (Saturday-Sunday). To achieve this, a new 2-level factor variable `wdays` is created to indicate whether the `date` variable is a weekend (level:1) or a weekday (level:2). The isWeekday() function of the [timeDate package](https://cran.r-project.org/web/packages/timeDate/timeDate.pdf) is employed to infer `wdays` accordingly. Provided a timeDate object input, isWeekday() performs a logical test to determine if the date is a weekday. If the test fails (i.e., returns FALSE), the date is then a weekend day. The `wdays` variable is added to (combined by column with) the `data_pam_na.im` dataframe.
 
 
 ```r
    library(timeDate)
-   wdays <- factor(isWeekday(timeDate(data_pam_na.im$date)),
-                   labels=c("weekend","weekday"))
-   data_pam_na.im$wdays <- wdays
+   data_pam_na.im$wdays <- factor(isWeekday(timeDate(data_pam_na.im$date)),
+                                  labels=c("weekend","weekday"))
 ```
 
-Similarly to the analysis in **section 3**, time-series plots are particularly useful to identify trends within data. The average steps taken daily for weekdays and weekends represented as a function of the 5-minute intervals are shown in the panel plots of **Figure 4** as constructed by this R code.
+Similarly to the analysis in **Section 3**, time-series plots are particularly useful to identify trends within data. The average steps taken daily for weekdays and weekends represented as a function of the 5-minute intervals are shown in the panel plots of **Figure 4** as constructed by this R code.
 
 
 ```r
@@ -212,7 +211,7 @@ Similarly to the analysis in **section 3**, time-series plots are particularly u
 
 **Figure 4**: Time-series plots of the average daily activity for weekends (top panel) and weekdays (bottom panel).
 
-The panels comparison in **Figure 4** reveals different activity trends during weekdays and weekends. For instance, during the weekends, the person's activity is characterized by several peak patterns of comparable intensity approximately between intervals [730-1730]. 
+The panels comparison in **Figure 4** reveals different activity trends during weekdays and weekends. For instance, during the weekends, the person's activity is characterized by several peak patterns of comparable intensity between intervals [730-1730], approximately. 
 
 
 ## Supplementary material
@@ -237,7 +236,7 @@ The panels comparison in **Figure 4** reveals different activity trends during w
 ## [1] 17568     3
 ```
 
-- To test the construction of the new factor variable `wdays` in **section 5**, this code chunk prints the day name and inferred factor for an arbitrary `date` (e.g., 2012-10-05) within the PAM dataset span.
+- To test the construction of the new factor variable `wdays` in **Section 5**, this code chunk prints the day name and inferred factor for an arbitrary `date` (e.g., 2012-10-05) within the PAM dataset span.
 
 ```r
    library(lubridate)
